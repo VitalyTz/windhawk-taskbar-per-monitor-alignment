@@ -26,10 +26,10 @@ Windhawk, replace the editor contents with
 [`taskbar-per-monitor-alignment.wh.cpp`](taskbar-per-monitor-alignment.wh.cpp), then
 compile and enable it.
 
-Then restart Windows Explorer **once** (Task Manager > Windows Explorer > Restart, or
-sign out and back in). The mod has to be present when each taskbar is created so it
-can capture that taskbar's settings; this applies after installing, enabling or
-recompiling it. Settings changes afterwards apply immediately.
+The mod takes over the running taskbars straight away, including after an update or
+when you disable and enable it, and settings changes apply immediately. If a taskbar
+doesn't change, for instance after a Windows update has changed the taskbar's
+internals, restart Windows Explorer once (Task Manager > Windows Explorer > Restart).
 
 Enable Windows' **Show my taskbar on all displays** if secondary taskbars are absent.
 Disabling the mod puts every taskbar back to Windows' own layout.
@@ -39,8 +39,9 @@ Disabling the mod puts every taskbar back to Windows' own layout.
 ![Mod settings](docs/settings.jpg)
 
 **Primary monitor / Other monitors** set the icon alignment and the Start button
-placement for every monitor of that kind. Defaults: primary Center, others Left,
-Start button following the icons. *Windows default* keeps Windows' own alignment.
+placement for every monitor of that kind. Defaults: the primary monitor keeps
+*Windows default*, others Left, Start button following the icons. *Windows default*
+keeps Windows' own alignment.
 
 **Per-monitor overrides** target single displays. Add one row per monitor and pick it
 from the **Monitor** dropdown: *1st* to *6th from the left*, or *Rightmost*. Windhawk's
@@ -80,8 +81,9 @@ taskbar features and other Windhawk taskbar-layout mods). Start menu and search
 flyouts keep using Windows' own placement. No registry values are changed, and the mod
 doesn't poll, inject input or restart Explorer.
 
-Not yet checked: unplugging or reconnecting a monitor while running, many pinned apps
-on a Right taskbar, and auto-hide.
+Checked once without problems: a display being removed while the mod was running.
+Not yet checked: many pinned apps on a Right taskbar, auto-hide, and the Widgets
+button, which the Start button's *Left edge* may overlap when Widgets is shown.
 
 The mod depends on private `taskbar.dll` symbols and XAML element names, so a Windows
 update can break it. If the core hooks can't be found, the mod refuses to start. The
@@ -91,9 +93,12 @@ symbols or elements are missing they stay off and Left/Center still work.
 ## How it works
 
 The mod hooks `TaskbarSettings`' constructor, destructor and both alignment getters in
-`taskbar.dll`. The constructor's `ITaskListWndSite` supplies the taskbar's window, whose
-monitor is looked up again on every read, so moving a taskbar or changing the primary
-display is handled. The COM interface is located by matching its symbol-resolved
+`taskbar.dll`. The constructor's `ITaskListWndSite` identifies the taskbar's window,
+whose monitor is looked up again on every read, so moving a taskbar or changing the
+primary display is handled. Settings objects that already existed when the mod loaded
+are adopted on their first alignment read: the mod finds each taskbar's band and site
+from its window, and looks for them in the settings object. The site is never kept
+alive by the mod. The COM interface is located by matching its symbol-resolved
 vtable, and the XAML-based features reach the taskbar through
 `ITaskListWndSite::GetTaskbarHost` and `TaskbarHost::FrameHeight`, whose first
 instructions yield the element offset at runtime rather than it being hard-coded.
@@ -104,7 +109,10 @@ negative right margin equal to its width, which removes its slot from the icon g
 and a render transform, which doesn't affect layout, moves it to its edge. Positions
 are recomputed on every layout pass, writing a property only when its value changes.
 All XAML access happens on the taskbar's own thread, retried while the taskbar is
-still being built, and everything is restored when the mod is disabled.
+still being built. Margins are tracked rather than saved and written back, because
+Windows changes them itself when the alignment flips. Everything is restored on the
+taskbar's thread when the mod is disabled, and the references to XAML objects are
+released there too.
 
 Windhawk finds a mod's entry points by their C++-mangled names, so `Wh_ModInit`,
 `Wh_ModSettingsChanged` and `Wh_ModBeforeUninit` must be plain functions. Declaring them

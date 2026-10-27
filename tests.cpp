@@ -1,5 +1,10 @@
 #include "taskbar-per-monitor-alignment.wh.cpp"
 #include <cassert>
+
+// The icon alignment chosen for a monitor, the part of the placement most tests look at.
+static int SelectAlignment(const Settings& settings, const MonitorIdentity& monitor, bool primary) {
+    return SelectPlacement(settings, monitor, primary).icons;
+}
 #include <cstdio>
 
 MonitorIdentity Primary() {
