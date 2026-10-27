@@ -77,7 +77,7 @@ Windows 11, x64, native taskbar. Developed and tested on Windows 11 26H2 (build
 26300) with Windhawk 1.7.3, on three displays with different resolutions and scales.
 Not supported: Windows 10, ARM64, vertical taskbars, and tools that replace the
 taskbar or change its alignment or layout (ExplorerPatcher, StartAllBack, Start11's
-taskbar features and other Windhawk taskbar-layout mods). Start menu and search
+taskbar features and other Windhawk taskbar-layout mods), see the next section. Start menu and search
 flyouts keep using Windows' own placement. No registry values are changed, and the mod
 doesn't poll, inject input or restart Explorer.
 
@@ -89,6 +89,30 @@ The mod depends on private `taskbar.dll` symbols and XAML element names, so a Wi
 update can break it. If the core hooks can't be found, the mod refuses to start. The
 XAML-based features (Right icons, Start button placement) are optional: if their
 symbols or elements are missing they stay off and Left/Center still work.
+
+## Other taskbar tools can interfere
+
+Apps and mods that add their own taskbar features, such as Start11, StartAllBack,
+ExplorerPatcher or other Windhawk taskbar mods, can take over how the taskbar buttons
+are drawn and laid out. Center, Right and the Start button placement can then look
+wrong or not apply, whatever this mod does.
+
+A known case is **Start11's "Let Start11 enhance the taskbar"**. It draws the taskbar
+buttons itself, in its own window laid over the taskbar, so the buttons this mod
+positions are not the ones you see. With Right, for example, only some of the buttons
+may show up, cut off on the left:
+
+![Right alignment with Start11's taskbar enhancement on: only some buttons are visible](docs/start11-symptom-right.png)
+
+If you see this, open Start11, go to **Taskbar** and turn **Let Start11 enhance the
+taskbar** off (or use the option below it, *Disable all taskbar features for
+compatibility with other taskbar mods*), then restart Explorer. The page should look
+like this:
+
+![Start11's Taskbar page with Let Start11 enhance the taskbar switched off](docs/start11-setting.png)
+
+For any other tool, switch its taskbar features off for a moment to check whether they
+are the cause.
 
 ## How it works
 
