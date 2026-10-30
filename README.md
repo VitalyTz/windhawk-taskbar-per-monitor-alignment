@@ -40,7 +40,7 @@ Disabling the mod puts every taskbar back to Windows' own layout.
 
 ## Configure
 
-![Mod settings](docs/settings.jpg)
+![Mod settings](docs/settings-v2.jpg)
 
 **Primary monitor / Other monitors** set the icon alignment and the Start button
 placement for every monitor of that kind. Defaults: the primary monitor keeps
@@ -113,7 +113,7 @@ taskbar** off (or use the option below it, *Disable all taskbar features for
 compatibility with other taskbar mods*), then restart Explorer. The page should look
 like this:
 
-![Start11's Taskbar page with Let Start11 enhance the taskbar switched off](docs/start11-setting.png)
+![Start11's Taskbar page with Let Start11 enhance the taskbar switched off](docs/start11-setting-v2.png)
 
 For any other tool, switch its taskbar features off for a moment to check whether they
 are the cause.
