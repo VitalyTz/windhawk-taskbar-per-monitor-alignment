@@ -8,9 +8,9 @@ monitor gets its own look:
 
 Windows itself offers a single alignment for all taskbars, and only Left or Center.
 
-[![Support on Ko-fi](docs/ko-fi-small.png)](https://ko-fi.com/vmtools)
+[![Support on Ko-fi](docs/ko-fi-small.png)](https://ko-fi.com/vtools)
 
-Like this mod? You can [support its development on Ko-fi](https://ko-fi.com/vmtools).
+Like this mod? You can [support its development on Ko-fi](https://ko-fi.com/vtools).
 
 ![A monitor with centered icons and the Start button at the left edge](docs/monitor2-overview.jpg)
 
