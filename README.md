@@ -8,7 +8,7 @@ monitor gets its own look:
 
 Windows itself offers a single alignment for all taskbars, and only Left or Center.
 
-[![Support on Ko-fi](docs/ko-fi.png)](https://ko-fi.com/vmtools)
+[![Support on Ko-fi](docs/ko-fi-50.png)](https://ko-fi.com/vmtools)
 
 Like this mod? You can [support its development on Ko-fi](https://ko-fi.com/vmtools).
 
